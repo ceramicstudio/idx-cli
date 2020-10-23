@@ -5,6 +5,7 @@ import { flags } from '@oclif/command'
 import Wallet from 'identity-wallet'
 
 import { Command } from '../../command'
+import { getPublicDID } from '../../config'
 
 function getPermission() {
   return Promise.resolve([])
@@ -31,6 +32,14 @@ export default class CreateDID extends Command<Flags> {
   async run(): Promise<void> {
     this.spinner.start('Creating DID...')
     try {
+      if (this.flags.label) {
+        const exists = await getPublicDID(this.flags.label)
+        if (exists != null) {
+          this.spinner.fail('This label is already used')
+          return
+        }
+      }
+
       const ceramic = await this.getCeramic()
       const seed = this.flags.seed || '0x' + randomBytes(32).toString('hex')
       const wallet = await Wallet.create({ ceramic, seed, getPermission })

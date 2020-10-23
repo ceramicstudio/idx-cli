@@ -3,6 +3,7 @@ import { inspect } from 'util'
 import Ceramic from '@ceramicnetwork/ceramic-http-client'
 import { IDX } from '@ceramicstudio/idx'
 import { definitions } from '@ceramicstudio/idx-constants'
+import type { Definition, IDXDefinitionName } from '@ceramicstudio/idx-tools'
 import { Command as Cmd, flags } from '@oclif/command'
 import Wallet from 'identity-wallet'
 import ora from 'ora'
@@ -79,6 +80,11 @@ export abstract class Command<
     return this._idx
   }
 
+  async getDefinition(id: string): Promise<Definition> {
+    const idx = await this.getIDX()
+    return await idx.getDefinition(definitions[id as IDXDefinitionName] ?? id)
+  }
+
   async getWallet(did: string): Promise<Wallet> {
     const found = await getDID(did)
     if (found == null) {
@@ -86,6 +92,12 @@ export abstract class Command<
     }
     const ceramic = await this.getCeramic()
     return await Wallet.create({ ceramic, seed: found[1].seed, getPermission })
+  }
+
+  async getAuthenticatedCeramic(did: string): Promise<Ceramic> {
+    const [ceramic, wallet] = await Promise.all([this.getCeramic(), this.getWallet(did)])
+    await ceramic.setDIDProvider(wallet.getDidProvider())
+    return ceramic
   }
 
   logJSON(data: unknown): void {

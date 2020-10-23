@@ -27,8 +27,8 @@
   "scripts": {
     "lint": "eslint src",
     "postpack": "rm -f oclif.manifest.json",
-    "posttest": "eslint . --ext .ts --config .eslintrc",
-    "build": "rm -rf lib && tsc -b && oclif-dev manifest ",
+    "posttest": "npm run lint",
+    "build": "rm -rf lib && tsc -b && cp src/index.js lib && oclif-dev manifest",
     "prepack": "npm run build && oclif-dev readme",
     "test": "echo NO TESTS",
     "version": "oclif-dev readme && git add README.md"
@@ -41,10 +41,10 @@
     ]
   },
   "dependencies": {
-    "@ceramicnetwork/ceramic-http-client": "^0.6.4",
-    "@ceramicstudio/idx": "^0.2.0",
-    "@ceramicstudio/idx-constants": "^0.2.0",
-    "@ceramicstudio/idx-tools": "^0.2.1",
+    "@ceramicnetwork/ceramic-http-client": "^0.6.5",
+    "@ceramicstudio/idx": "^0.2.1",
+    "@ceramicstudio/idx-constants": "^0.2.1",
+    "@ceramicstudio/idx-tools": "^0.2.2",
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-help": "^3.2.0",
@@ -52,20 +52,22 @@
     "conf": "^7.1.2",
     "identity-wallet": "^2.0.0-alpha.13",
     "inquirer": "^7.3.3",
-    "keytar": "^6.0.1",
+    "keytar": "^7.0.0",
     "listr": "^0.14.3",
     "listr-update-renderer": "^0.5.0",
     "ora": "^5.1.0",
-    "tslib": "^2.0.2"
+    "tslib": "^2.0.3",
+    "update-notifier": "^5.0.0"
   },
   "devDependencies": {
-    "@ceramicnetwork/ceramic-common": "^0.10.0",
+    "@ceramicnetwork/ceramic-common": "^0.10.1",
     "@oclif/dev-cli": "^1.22.2",
     "@types/inquirer": "^7.3.1",
     "@types/listr": "^0.14.2",
-    "@types/node": "^14.11.8",
+    "@types/node": "^14.14.2",
+    "@types/update-notifier": "^5.0.0",
     "did-resolver": "^2.1.1",
-    "eslint": "^7.10.0",
+    "eslint": "^7.11.0",
     "eslint-config-3box": "^0.2.0",
     "globby": "^11.0.0",
     "prettier": "^2.1.2",
