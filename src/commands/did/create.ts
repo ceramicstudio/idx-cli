@@ -3,6 +3,7 @@ import { randomBytes } from 'crypto'
 import { encodeDagJWSResult } from '@ceramicstudio/idx-tools'
 import { flags } from '@oclif/command'
 import Wallet from 'identity-wallet'
+import { fromString, toString } from 'uint8arrays'
 
 import { Command } from '../../command'
 import { getPublicDID } from '../../config'
@@ -41,10 +42,12 @@ export default class CreateDID extends Command<Flags> {
       }
 
       const ceramic = await this.getCeramic()
-      const seed = this.flags.seed || '0x' + randomBytes(32).toString('hex')
+      const seed = this.flags.seed
+        ? fromString(this.flags.seed, 'base16')
+        : new Uint8Array(randomBytes(32))
       const wallet = await Wallet.create({ ceramic, seed, getPermission })
 
-      const docID = wallet.id.replace('did:3:', 'ceramic://')
+      const docID = wallet.id.replace('did:3:', '')
       const docRecords = await ceramic.loadDocumentRecords(docID)
       const records = docRecords.map((record) => encodeDagJWSResult(record.value))
 
@@ -53,7 +56,7 @@ export default class CreateDID extends Command<Flags> {
       dids[wallet.id] = {
         createdAt: new Date().toISOString(),
         label: this.flags.label,
-        seed,
+        seed: toString(seed, 'base16'),
         records,
       }
       cfg.set('dids', dids)

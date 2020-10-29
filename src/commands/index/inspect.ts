@@ -18,8 +18,6 @@ function reverse(record: Record<string, string>): Record<string, string> {
 const DEFINITIONS_LOOKUP = reverse(definitions)
 const SCHEMAS_LOOKUP = reverse(schemas)
 
-const IGNORE_KEYS = ['auth-keychain', 'rotated-keys']
-
 export default class InspectIndex extends Command<CommandFlags, { did: string }> {
   static description = 'inspects the contents of an IDX document'
 
@@ -45,45 +43,41 @@ export default class InspectIndex extends Command<CommandFlags, { did: string }>
 
       this.spinner.succeed('IDX document loaded')
 
-      const tasks = Object.keys(index)
-        // Remove invalid keys set by IDW
-        .filter((k) => !IGNORE_KEYS.includes(k))
-        .map((key) => {
-          const keyID = key.startsWith('ceramic://') ? key : `ceramic://${key}`
-          const keyAlias = DEFINITIONS_LOOKUP[keyID]
-          return {
-            title: keyAlias ? `${key} (IDX ${keyAlias})` : key,
-            task: () => {
-              const getDef = idx.getDefinition(keyID)
-              return new Listr([
-                {
-                  title: 'Load definition...',
-                  task: async (ctx, task) => {
-                    const def = await getDef
-                    let title = `Definition: ${def.name}`
-                    if (def.description != null) {
-                      title += ` (${def.description})`
-                    }
-                    if (def.url != null) {
-                      title += ` - ${def.url}`
-                    }
-                    task.title = title
-                  },
+      const tasks = Object.keys(index).map((key) => {
+        const keyAlias = DEFINITIONS_LOOKUP[key]
+        return {
+          title: keyAlias ? `${key} (IDX ${keyAlias})` : key,
+          task: () => {
+            const getDef = idx.getDefinition(key)
+            return new Listr([
+              {
+                title: 'Load definition...',
+                task: async (ctx, task) => {
+                  const def = await getDef
+                  let title = `Definition: ${def.name}`
+                  if (def.description != null) {
+                    title += ` (${def.description})`
+                  }
+                  if (def.url != null) {
+                    title += ` - ${def.url}`
+                  }
+                  task.title = title
                 },
-                {
-                  title: 'Check schema...',
-                  task: async (ctx, task) => {
-                    const def = await getDef
-                    const schemaAlias = SCHEMAS_LOOKUP[def.schema]
-                    task.title = schemaAlias
-                      ? `Schema: ${def.schema} (IDX ${schemaAlias})`
-                      : `Schema: ${def.schema}` ?? 'No Schema'
-                  },
+              },
+              {
+                title: 'Check schema...',
+                task: async (ctx, task) => {
+                  const def = await getDef
+                  const schemaAlias = SCHEMAS_LOOKUP[def.schema]
+                  task.title = schemaAlias
+                    ? `Schema: ${def.schema} (IDX ${schemaAlias})`
+                    : `Schema: ${def.schema}` ?? 'No Schema'
                 },
-              ])
-            },
-          } as ListrTask
-        })
+              },
+            ])
+          },
+        } as ListrTask
+      })
       const list = new Listr(tasks, {
         concurrent: true,
         exitOnError: false,

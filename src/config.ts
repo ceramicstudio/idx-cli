@@ -38,7 +38,7 @@ const SCHEMA: Schema<ConfigData> = {
   dids: {
     type: 'object',
     propertyNames: {
-      pattern: '^did:3:[0-9A-Za-z]+$',
+      pattern: '^did:3:[0-9a-z]+$',
     },
     additionalProperties: {
       type: 'object',
@@ -52,7 +52,7 @@ const SCHEMA: Schema<ConfigData> = {
         },
         seed: {
           type: 'string',
-          pattern: '^0x[0-9a-f]{64}$',
+          pattern: '^[0-9a-f]{64}$',
         },
         records: {
           type: 'array',

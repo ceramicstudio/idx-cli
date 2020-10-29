@@ -8,15 +8,12 @@ import { Command as Cmd, flags } from '@oclif/command'
 import Wallet from 'identity-wallet'
 import ora from 'ora'
 import type { Ora } from 'ora'
+import { fromString } from 'uint8arrays'
 
 import { getDID, getConfig } from './config'
 import type { Config } from './config'
 
 type StringRecord = Record<string, unknown>
-
-function getPermission() {
-  return Promise.resolve([])
-}
 
 export interface CommandFlags {
   ceramic?: string
@@ -91,7 +88,13 @@ export abstract class Command<
       throw new Error('Could not load DID from local store')
     }
     const ceramic = await this.getCeramic()
-    return await Wallet.create({ ceramic, seed: found[1].seed, getPermission })
+    return await Wallet.create({
+      ceramic,
+      seed: fromString(found[1].seed, 'base16'),
+      getPermission() {
+        return Promise.resolve([])
+      },
+    })
   }
 
   async getAuthenticatedCeramic(did: string): Promise<Ceramic> {
