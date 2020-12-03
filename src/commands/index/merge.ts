@@ -5,14 +5,19 @@ export default class MergeIndex extends Command<
   CommandFlags,
   { did: string; key: string; contents: Record<string, unknown> }
 > {
-  static description = 'merges the contents of a key in IDX'
+  static description = 'merge the contents of a key in IDX'
 
   static flags = Command.flags
 
   static args = [
     { name: 'did', description: 'DID or label', required: true },
     { name: 'key', required: true },
-    { name: 'contents', required: true, parse: JSON.parse },
+    {
+      name: 'contents',
+      description: 'String-encoded JSON data',
+      required: true,
+      parse: JSON.parse,
+    },
   ]
 
   async run(): Promise<void> {

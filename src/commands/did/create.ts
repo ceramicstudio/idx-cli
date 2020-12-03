@@ -1,16 +1,12 @@
 import { randomBytes } from 'crypto'
 
-import { encodeDagJWSResult } from '@ceramicstudio/idx-tools'
 import { flags } from '@oclif/command'
-import Wallet from 'identity-wallet'
+import { DID } from 'dids'
+import { Ed25519Provider } from 'key-did-provider-ed25519'
 import { fromString, toString } from 'uint8arrays'
 
 import { Command } from '../../command'
 import { getPublicDID } from '../../config'
-
-function getPermission() {
-  return Promise.resolve([])
-}
 
 type Flags = {
   ceramic?: string
@@ -26,7 +22,7 @@ export default class CreateDID extends Command<Flags> {
     label: flags.string({ char: 'l', description: 'label for the DID' }),
     seed: flags.string({
       char: 's',
-      description: 'Hex-encoded seed to use for the DID, starting with `0x`',
+      description: 'base16-encoded seed to use for the DID',
     }),
   }
 
@@ -41,27 +37,23 @@ export default class CreateDID extends Command<Flags> {
         }
       }
 
-      const ceramic = await this.getCeramic()
+      const [cfg, resolver] = await Promise.all([this.getConfig(), this.getResolverRegistry()])
       const seed = this.flags.seed
         ? fromString(this.flags.seed, 'base16')
         : new Uint8Array(randomBytes(32))
-      const wallet = await Wallet.create({ ceramic, seed, getPermission })
 
-      const docID = wallet.id.replace('did:3:', '')
-      const docRecords = await ceramic.loadDocumentRecords(docID)
-      const records = docRecords.map((record) => encodeDagJWSResult(record.value))
+      const did = new DID({ provider: new Ed25519Provider(seed), resolver })
+      await did.authenticate()
 
-      const cfg = await this.getConfig()
       const dids = cfg.get('dids')
-      dids[wallet.id] = {
+      dids[did.id] = {
         createdAt: new Date().toISOString(),
         label: this.flags.label,
         seed: toString(seed, 'base16'),
-        records,
       }
       cfg.set('dids', dids)
 
-      this.spinner.succeed(`Created DID: ${wallet.id}`)
+      this.spinner.succeed(`Created DID: ${did.id}`)
     } catch (err) {
       this.spinner.fail((err as Error).message)
     }

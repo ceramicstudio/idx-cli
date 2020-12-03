@@ -5,39 +5,48 @@ import { Command } from '../../command'
 import type { CommandFlags } from '../../command'
 
 interface Flags extends CommandFlags {
-  description?: string
+  name: string
+  description: string
+  schema: string
   url?: string
 }
 
-export default class CreateDefinition extends Command<
-  Flags,
-  { did: string; name: string; schema: string }
-> {
+export default class CreateDefinition extends Command<Flags, { did: string }> {
   static description = 'create a definition'
 
   static flags = {
     ...Command.flags,
-    description: flags.string({ char: 'd', description: 'description of the definition' }),
+    name: flags.string({
+      char: 'n',
+      description: 'name of the definition',
+      required: true,
+    }),
+    description: flags.string({
+      char: 'd',
+      description: 'description of the definition',
+      required: true,
+    }),
+    schema: flags.string({
+      char: 's',
+      description: 'schema for the definition contents',
+      required: true,
+    }),
     url: flags.string({ char: 'u', description: 'documentation URL for the definition' }),
   }
 
-  static args = [
-    { name: 'did', description: 'DID to create the definition with', required: true },
-    { name: 'name', description: 'name of the definition', required: true },
-    { name: 'schema', description: 'schema for the definition contents', required: true },
-  ]
+  static args = [{ name: 'did', description: 'DID to create the definition with', required: true }]
 
   async run(): Promise<void> {
     this.spinner.start('Creating definition...')
     try {
       const ceramic = await this.getAuthenticatedCeramic(this.args.did)
-      const id = await createDefinition(ceramic, {
-        name: this.args.name,
-        schema: this.args.schema,
+      const doc = await createDefinition(ceramic, {
+        name: this.flags.name,
+        schema: this.flags.schema,
         description: this.flags.description,
         url: this.flags.url,
       })
-      this.spinner.succeed(`Definition successfully created: ${id}`)
+      this.spinner.succeed(`Definition successfully created: ${doc.id.toString()}`)
     } catch (err) {
       this.spinner.fail((err as Error).message)
     }

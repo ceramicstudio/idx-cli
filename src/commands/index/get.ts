@@ -4,7 +4,7 @@ import type { CommandFlags } from '../../command'
 import { getPublicDID } from '../../config'
 
 export default class GetIndex extends Command<CommandFlags, { did: string; key: string }> {
-  static description = 'gets the contents of a key in IDX'
+  static description = 'get the contents of a key in IDX'
 
   static flags = Command.flags
 

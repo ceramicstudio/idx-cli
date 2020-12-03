@@ -1,6 +1,5 @@
 import { randomBytes } from 'crypto'
 
-import type { EncodedDagJWSResult } from '@ceramicstudio/idx-tools'
 import Conf from 'conf'
 import type { Schema } from 'conf'
 import { getPassword, setPassword } from 'keytar'
@@ -12,7 +11,6 @@ export type DIDConfig = {
   createdAt: string // datetime
   label?: string
   seed: string // 0x-prefixed hex
-  records: Array<EncodedDagJWSResult>
 }
 
 export type UserConfig = {
@@ -38,7 +36,7 @@ const SCHEMA: Schema<ConfigData> = {
   dids: {
     type: 'object',
     propertyNames: {
-      pattern: '^did:3:[0-9a-z]+$',
+      pattern: '^did:(3|key):[0-9A-Za-z]+$',
     },
     additionalProperties: {
       type: 'object',
@@ -54,14 +52,8 @@ const SCHEMA: Schema<ConfigData> = {
           type: 'string',
           pattern: '^[0-9a-f]{64}$',
         },
-        records: {
-          type: 'array',
-          items: {
-            type: 'object',
-          },
-        },
       },
-      required: ['createdAt', 'seed', 'records'],
+      required: ['createdAt', 'seed'],
     },
   },
   user: {

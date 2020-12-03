@@ -19,7 +19,7 @@ const DEFINITIONS_LOOKUP = reverse(definitions)
 const SCHEMAS_LOOKUP = reverse(schemas)
 
 export default class InspectIndex extends Command<CommandFlags, { did: string }> {
-  static description = 'inspects the contents of an IDX document'
+  static description = 'inspect the contents of an IDX document'
 
   static flags = Command.flags
 
@@ -37,7 +37,7 @@ export default class InspectIndex extends Command<CommandFlags, { did: string }>
       const idx = await this.getIDX()
       const index = await idx.getIDXContent(did)
       if (index == null) {
-        this.spinner.warn('IDX document could not be loaded')
+        this.spinner.warn('IDX document is empty')
         return
       }
 

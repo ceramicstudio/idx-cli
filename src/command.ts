@@ -1,11 +1,16 @@
 import { inspect } from 'util'
 
-import Ceramic from '@ceramicnetwork/ceramic-http-client'
+import ThreeIDResolver from '@ceramicnetwork/3id-did-resolver'
+import Ceramic from '@ceramicnetwork/http-client'
+import KeyResolver from '@ceramicnetwork/key-did-resolver'
 import { IDX } from '@ceramicstudio/idx'
 import { definitions } from '@ceramicstudio/idx-constants'
-import type { Definition, IDXDefinitionName } from '@ceramicstudio/idx-tools'
+import type { IDXDefinitionName } from '@ceramicstudio/idx-constants'
+import type { Definition } from '@ceramicstudio/idx-tools'
 import { Command as Cmd, flags } from '@oclif/command'
-import Wallet from 'identity-wallet'
+import { DID } from 'dids'
+import type { ResolverRegistry } from 'dids'
+import { Ed25519Provider } from 'key-did-provider-ed25519'
 import ora from 'ora'
 import type { Ora } from 'ora'
 import { fromString } from 'uint8arrays'
@@ -30,6 +35,7 @@ export abstract class Command<
 
   _ceramic: Ceramic | null = null
   _idx: IDX | null = null
+  _resolverRegistry: ResolverRegistry | null = null
   args!: Args
   flags!: Flags
   spinner!: Ora
@@ -65,41 +71,57 @@ export abstract class Command<
     return await getConfig()
   }
 
+  async getResolverRegistry(): Promise<ResolverRegistry> {
+    if (this._resolverRegistry == null) {
+      const ceramic = await this.getCeramic()
+      const keyResolver = KeyResolver.getResolver()
+      const threeIDResolver = ThreeIDResolver.getResolver(ceramic)
+      this._resolverRegistry = { ...keyResolver, ...threeIDResolver }
+    }
+    return this._resolverRegistry
+  }
+
+  async getDID(id?: string): Promise<DID> {
+    if (id == null) {
+      return new DID({ resolver: await this.getResolverRegistry() })
+    }
+
+    const [provider, resolver] = await Promise.all([
+      this.getProvider(id),
+      this.getResolverRegistry(),
+    ])
+    const did = new DID({ provider, resolver })
+    await did.authenticate()
+    return did
+  }
+
   async getIDX(did?: string): Promise<IDX> {
     if (this._idx == null) {
-      const ceramic = await this.getCeramic()
-      this._idx = new IDX({ ceramic, definitions })
+      this._idx = new IDX({ ceramic: await this.getCeramic() })
     }
     if (did != null) {
-      const wallet = await this.getWallet(did)
-      await this._idx.authenticate({ provider: wallet.getDidProvider() })
+      const provider = await this.getProvider(did)
+      await this._idx.authenticate({ provider })
     }
     return this._idx
   }
 
-  async getDefinition(id: string): Promise<Definition> {
+  async getDefinition(name: string): Promise<Definition> {
     const idx = await this.getIDX()
-    return await idx.getDefinition(definitions[id as IDXDefinitionName] ?? id)
+    return await idx.getDefinition(definitions[name as IDXDefinitionName] ?? name)
   }
 
-  async getWallet(did: string): Promise<Wallet> {
-    const found = await getDID(did)
+  async getProvider(id: string): Promise<Ed25519Provider> {
+    const found = await getDID(id)
     if (found == null) {
       throw new Error('Could not load DID from local store')
     }
-    const ceramic = await this.getCeramic()
-    return await Wallet.create({
-      ceramic,
-      seed: fromString(found[1].seed, 'base16'),
-      getPermission() {
-        return Promise.resolve([])
-      },
-    })
+    return new Ed25519Provider(fromString(found[1].seed, 'base16'))
   }
 
-  async getAuthenticatedCeramic(did: string): Promise<Ceramic> {
-    const [ceramic, wallet] = await Promise.all([this.getCeramic(), this.getWallet(did)])
-    await ceramic.setDIDProvider(wallet.getDidProvider())
+  async getAuthenticatedCeramic(id: string): Promise<Ceramic> {
+    const [ceramic, provider] = await Promise.all([this.getCeramic(), this.getProvider(id)])
+    await ceramic.setDIDProvider(provider)
     return ceramic
   }
 
