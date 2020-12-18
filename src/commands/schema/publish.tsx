@@ -24,7 +24,7 @@ export default class PublishSchema extends Command<
     try {
       const ceramic = await this.getAuthenticatedCeramic(this.args.did)
       const schema = await publishSchema(ceramic, { name: 'input', content: this.args.schema })
-      this.spinner.succeed(`Schema published with URL: ${schema.versionId.toUrl()}`)
+      this.spinner.succeed(`Schema published with URL: ${schema.commitId.toUrl()}`)
     } catch (err) {
       this.spinner.fail((err as Error).message)
     }

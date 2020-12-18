@@ -5,7 +5,7 @@ import Ceramic from '@ceramicnetwork/http-client'
 import KeyResolver from '@ceramicnetwork/key-did-resolver'
 import { IDX } from '@ceramicstudio/idx'
 import { definitions } from '@ceramicstudio/idx-constants'
-import type { IDXDefinitionName } from '@ceramicstudio/idx-constants'
+import type { DefinitionName } from '@ceramicstudio/idx-constants'
 import type { Definition } from '@ceramicstudio/idx-tools'
 import { Command as Cmd, flags } from '@oclif/command'
 import { DID } from 'dids'
@@ -55,18 +55,6 @@ export abstract class Command<
     }
   }
 
-  async getCeramic(): Promise<Ceramic> {
-    if (this._ceramic == null) {
-      let url = this.flags.ceramic
-      if (url == null) {
-        const cfg = await getConfig()
-        url = cfg.get('user')['ceramic-url']
-      }
-      this._ceramic = new Ceramic(url)
-    }
-    return this._ceramic
-  }
-
   async getConfig(): Promise<Config> {
     return await getConfig()
   }
@@ -95,20 +83,35 @@ export abstract class Command<
     return did
   }
 
+  async getCeramic(): Promise<Ceramic> {
+    if (this._ceramic == null) {
+      let url = this.flags.ceramic
+      if (url == null) {
+        const cfg = await getConfig()
+        url = cfg.get('user')['ceramic-url']
+      }
+      this._ceramic = new Ceramic(url)
+    }
+    return this._ceramic
+  }
+
+  async getAuthenticatedCeramic(id: string): Promise<Ceramic> {
+    const [ceramic, provider] = await Promise.all([this.getCeramic(), this.getProvider(id)])
+    await ceramic.setDIDProvider(provider)
+    return ceramic
+  }
+
   async getIDX(did?: string): Promise<IDX> {
     if (this._idx == null) {
-      this._idx = new IDX({ ceramic: await this.getCeramic() })
-    }
-    if (did != null) {
-      const provider = await this.getProvider(did)
-      await this._idx.authenticate({ provider })
+      const ceramic = did ? await this.getAuthenticatedCeramic(did) : await this.getCeramic()
+      this._idx = new IDX({ ceramic })
     }
     return this._idx
   }
 
   async getDefinition(name: string): Promise<Definition> {
     const idx = await this.getIDX()
-    return await idx.getDefinition(definitions[name as IDXDefinitionName] ?? name)
+    return await idx.getDefinition(definitions[name as DefinitionName] ?? name)
   }
 
   async getProvider(id: string): Promise<Ed25519Provider> {
@@ -117,12 +120,6 @@ export abstract class Command<
       throw new Error('Could not load DID from local store')
     }
     return new Ed25519Provider(fromString(found[1].seed, 'base16'))
-  }
-
-  async getAuthenticatedCeramic(id: string): Promise<Ceramic> {
-    const [ceramic, provider] = await Promise.all([this.getCeramic(), this.getProvider(id)])
-    await ceramic.setDIDProvider(provider)
-    return ceramic
   }
 
   logJSON(data: unknown): void {
