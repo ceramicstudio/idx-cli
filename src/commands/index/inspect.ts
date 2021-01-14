@@ -35,7 +35,7 @@ export default class InspectIndex extends Command<CommandFlags, { did: string }>
       }
 
       const idx = await this.getIDX()
-      const index = await idx.getIDXContent(did)
+      const index = await idx.getIndex(did)
       if (index == null) {
         this.spinner.warn('IDX document is empty')
         return

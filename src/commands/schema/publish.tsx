@@ -7,7 +7,7 @@ export default class PublishSchema extends Command<
   CommandFlags,
   { did: string; schema: Record<string, any> }
 > {
-  static description = 'publish as schema'
+  static description = 'publish a schema'
 
   static args = [
     { name: 'did', description: 'DID or label', required: true },

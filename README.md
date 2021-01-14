@@ -51,7 +51,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/bootstrap.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/bootstrap.ts)_
+_See code: [src/commands/bootstrap.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/bootstrap.ts)_
 
 ## `idx config:get KEY`
 
@@ -65,7 +65,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/config/get.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/config/get.ts)_
+_See code: [src/commands/config/get.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/config/get.ts)_
 
 ## `idx config:reset KEY`
 
@@ -79,7 +79,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/config/reset.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/config/reset.ts)_
+_See code: [src/commands/config/reset.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/config/reset.ts)_
 
 ## `idx config:set KEY VALUE`
 
@@ -93,7 +93,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/config/set.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/config/set.ts)_
+_See code: [src/commands/config/set.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/config/set.ts)_
 
 ## `idx config:show`
 
@@ -107,7 +107,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/config/show.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/config/show.ts)_
+_See code: [src/commands/config/show.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/config/show.ts)_
 
 ## `idx definition:check ID`
 
@@ -124,7 +124,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/definition/check.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/definition/check.ts)_
+_See code: [src/commands/definition/check.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/definition/check.ts)_
 
 ## `idx definition:create DID`
 
@@ -145,7 +145,7 @@ OPTIONS
   -u, --url=url                  documentation URL for the definition
 ```
 
-_See code: [src/commands/definition/create.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/definition/create.ts)_
+_See code: [src/commands/definition/create.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/definition/create.ts)_
 
 ## `idx definition:info ID`
 
@@ -162,7 +162,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/definition/info.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/definition/info.ts)_
+_See code: [src/commands/definition/info.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/definition/info.ts)_
 
 ## `idx definition:schema ID`
 
@@ -179,7 +179,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/definition/schema.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/definition/schema.ts)_
+_See code: [src/commands/definition/schema.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/definition/schema.ts)_
 
 ## `idx did:create`
 
@@ -195,7 +195,7 @@ OPTIONS
   -s, --seed=seed        base16-encoded seed to use for the DID
 ```
 
-_See code: [src/commands/did/create.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/did/create.ts)_
+_See code: [src/commands/did/create.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/did/create.ts)_
 
 ## `idx did:delete DID`
 
@@ -210,7 +210,7 @@ OPTIONS
   -f, --force            bypass confirmation prompt
 ```
 
-_See code: [src/commands/did/delete.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/did/delete.ts)_
+_See code: [src/commands/did/delete.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/did/delete.ts)_
 
 ## `idx did:label DID [LABEL]`
 
@@ -225,7 +225,7 @@ OPTIONS
   -d, --delete           delete the label
 ```
 
-_See code: [src/commands/did/label.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/did/label.ts)_
+_See code: [src/commands/did/label.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/did/label.ts)_
 
 ## `idx did:list`
 
@@ -239,7 +239,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/did/list.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/did/list.ts)_
+_See code: [src/commands/did/list.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/did/list.ts)_
 
 ## `idx did:sign DID CONTENTS`
 
@@ -257,7 +257,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/did/sign.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/did/sign.ts)_
+_See code: [src/commands/did/sign.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/did/sign.ts)_
 
 ## `idx did:verify JWS`
 
@@ -274,7 +274,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/did/verify.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/did/verify.ts)_
+_See code: [src/commands/did/verify.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/did/verify.ts)_
 
 ## `idx help [COMMAND]`
 
@@ -309,7 +309,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/index/get.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/index/get.ts)_
+_See code: [src/commands/index/get.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/index/get.ts)_
 
 ## `idx index:inspect DID`
 
@@ -326,7 +326,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/index/inspect.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/index/inspect.ts)_
+_See code: [src/commands/index/inspect.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/index/inspect.ts)_
 
 ## `idx index:merge DID KEY CONTENTS`
 
@@ -345,7 +345,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/index/merge.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/index/merge.ts)_
+_See code: [src/commands/index/merge.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/index/merge.ts)_
 
 ## `idx index:set DID KEY CONTENTS`
 
@@ -364,11 +364,11 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/index/set.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/index/set.ts)_
+_See code: [src/commands/index/set.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/index/set.ts)_
 
 ## `idx schema:publish DID SCHEMA`
 
-publish as schema
+publish a schema
 
 ```
 USAGE
@@ -382,7 +382,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/schema/publish.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/schema/publish.ts)_
+_See code: [src/commands/schema/publish.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/schema/publish.ts)_
 
 ## `idx tile:create DID CONTENTS`
 
@@ -401,7 +401,7 @@ OPTIONS
   -s, --schema=schema    DocID of the schema validating the contents
 ```
 
-_See code: [src/commands/tile/create.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/tile/create.ts)_
+_See code: [src/commands/tile/create.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/tile/create.ts)_
 
 ## `idx tile:get ID`
 
@@ -419,7 +419,7 @@ OPTIONS
   --did=did              DID or label
 ```
 
-_See code: [src/commands/tile/get.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/tile/get.ts)_
+_See code: [src/commands/tile/get.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/tile/get.ts)_
 
 ## `idx tile:merge DID ID CONTENTS`
 
@@ -438,7 +438,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/tile/merge.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/tile/merge.ts)_
+_See code: [src/commands/tile/merge.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/tile/merge.ts)_
 
 ## `idx tile:set DID ID CONTENTS`
 
@@ -457,7 +457,7 @@ OPTIONS
   -c, --ceramic=ceramic  Ceramic API URL
 ```
 
-_See code: [src/commands/tile/set.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.4.0/src/commands/tile/set.ts)_
+_See code: [src/commands/tile/set.ts](https://github.com/ceramicstudio/idx-cli/blob/v0.5.0/src/commands/tile/set.ts)_
 <!-- commandsstop -->
 
 ## License

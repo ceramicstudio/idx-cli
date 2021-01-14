@@ -5,7 +5,7 @@
     "ceramic",
     "idx"
   ],
-  "version": "0.4.0",
+  "version": "0.5.0",
   "author": "Paul Le Cam <paul@3box.io>",
   "license": "(Apache-2.0 OR MIT)",
   "repository": "ceramicstudio/idx-cli",
@@ -41,12 +41,12 @@
     ]
   },
   "dependencies": {
-    "@ceramicnetwork/3id-did-resolver": "^0.6.0",
-    "@ceramicnetwork/http-client": "^0.8.8",
+    "@ceramicnetwork/3id-did-resolver": "^0.6.7",
+    "@ceramicnetwork/http-client": "^0.9.2",
     "@ceramicnetwork/key-did-resolver": "^0.2.2",
-    "@ceramicstudio/idx": "^0.5.0",
+    "@ceramicstudio/idx": "^0.6.0",
     "@ceramicstudio/idx-constants": "^0.5.1",
-    "@ceramicstudio/idx-tools": "^0.5.0",
+    "@ceramicstudio/idx-tools": "^0.6.1",
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-help": "^3.2.1",
@@ -58,23 +58,23 @@
     "keytar": "^7.3.0",
     "listr": "^0.14.3",
     "listr-update-renderer": "^0.5.0",
-    "ora": "^5.1.0",
-    "tslib": "^2.0.3",
-    "uint8arrays": "^1.1.0",
+    "ora": "^5.2.0",
+    "uint8arrays": "^2.0.5",
     "update-notifier": "^5.0.1"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^0.15.0",
+    "@ceramicnetwork/common": "^0.15.7",
     "@oclif/dev-cli": "^1.26.0",
     "@types/inquirer": "^7.3.1",
     "@types/listr": "^0.14.2",
-    "@types/node": "^14.14.14",
+    "@types/node": "^14.14.20",
     "@types/update-notifier": "^5.0.0",
-    "eslint": "^7.15.0",
+    "eslint": "^7.17.0",
     "eslint-config-3box": "^0.2.0",
-    "globby": "^11.0.0",
+    "globby": "^11.0.2",
     "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
+    "tslib": "^2.1.0",
     "typescript": "^4.1.3"
   }
 }
